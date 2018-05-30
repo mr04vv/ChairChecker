@@ -1,1 +1,6 @@
 flask
+websocket
+websocket_server
+websocket_client
+gevent-websocket
+gevent
