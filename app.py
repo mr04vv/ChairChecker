@@ -11,6 +11,10 @@ from contextlib import closing
 import time
 from websocket import create_connection
 from src import Tag, Chair
+import subprocess
+
+subprocess.Popen(["/usr/local/bin/fluentd -c /Users/mo-ri-/Works/Research/RFID/fluent/fluent_mac.conf"],
+                 stdout=subprocess.PIPE, shell=True)
 
 app = Flask(__name__)
 ws = None
@@ -41,14 +45,17 @@ def func2():
             j = sock.recv(bufsize).decode("utf-8").split("\t")
             j2 = json.loads(j[1])
             ChatApplication.j2 = j2
+
             for info in j2['tags']:
                 splited_info = info.split(":")
                 splited_info[1] = int(splited_info[1])+(3*(int(j2['rw_id'])-1))
                 chair_id = Tag.Tag.getChairId(splited_info[0])
+                # print(chair_id)
                 if chair_id is not None:
                     # print(chair_id)
                     if chair_id not in ChatApplication.existChairs:
                         ChatApplication.existChairs.append(chair_id)
+                        # print(chair_id)
 
                     # chair.rssi[splited_info] = splited_info[3]
                     # ChatApplication.rssi = chair.rssi
@@ -172,8 +179,6 @@ def index6():
         print()
         # print(Chair.Chair.chairs[int(request.form['c_id'])])
     return redirect(url_for('index2'))
-
-
 
 
 if __name__ == "__main__":
