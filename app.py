@@ -131,10 +131,8 @@ def index2():
     if len(Chair.Chair.chair_list) is not 0:
         for i in Chair.Chair.chairs:
             tags.append(i.tags)
-          # print(i.tags)
         return render_template('add.html', list=Chair.Chair.chair_list, tags=Tag.Tag.tag_chair_relation, tags_c=tags, chairs=Chair.Chair.chairs, res=res)
     else:
-
         return render_template('add.html', res=res)
 
 
@@ -154,30 +152,25 @@ def index4():
             return redirect(url_for('index2', res=1))
         else:
             return redirect(url_for('index2', res=0))
-    # print()
 
 
 @app.route('/add/chair', methods=['POST'])
 def index5():
     if request.method == 'POST':
         if len(Chair.Chair.chair_list) is not 0:
-            leng = Chair.Chair.chair_list[-1]
-            Chair.Chair(leng+1)
+            length = Chair.Chair.chair_list[-1]
+            Chair.Chair(length+1)
         else:
             Chair.Chair(1)
-
     return redirect(url_for('index2'))
 
 
 @app.route('/delete/chair', methods=['POST'])
 def index6():
     if request.method == 'POST':
-        for (index,chair) in enumerate(Chair.Chair.chairs):
+        for chair in Chair.Chair.chairs:
             if chair.id == int(Chair.Chair.chair_list[int(request.form['c_id'])]):
                 chair.deleteChair()
-
-        print()
-        # print(Chair.Chair.chairs[int(request.form['c_id'])])
     return redirect(url_for('index2'))
 
 
